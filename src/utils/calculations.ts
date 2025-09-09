@@ -67,7 +67,7 @@ export function calculateStandings(
     return b.totalWins - a.totalWins; // Tiebreaker: more wins
   });
 
-  // Assign ranks and trends
+  // Assign ranks and trends for wins leaderboard
   winsLeaderboard.forEach((standing, index) => {
     standing.currentRank = index + 1;
     if (standing.previousRank) {
@@ -76,15 +76,17 @@ export function calculateStandings(
     }
   });
 
-  lossesLeaderboard.forEach((standing, index) => {
-    standing.currentRank = index + 1;
-    if (standing.previousRank) {
-      if (standing.currentRank < standing.previousRank) standing.trend = 'up';
-      else if (standing.currentRank > standing.previousRank) standing.trend = 'down';
-    }
-  });
+  // Create a separate copy for losses leaderboard with its own ranks
+  const lossesLeaderboardWithRanks = lossesLeaderboard.map((standing, index) => ({
+    ...standing,
+    currentRank: index + 1,
+    trend: standing.previousRank ? (
+      (index + 1) < standing.previousRank ? 'up' as const :
+      (index + 1) > standing.previousRank ? 'down' as const : 'same' as const
+    ) : 'same' as const
+  }));
 
-  return { winsLeaderboard, lossesLeaderboard };
+  return { winsLeaderboard, lossesLeaderboard: lossesLeaderboardWithRanks };
 }
 
 // Monte Carlo simulation for season predictions
@@ -92,35 +94,55 @@ export function runMonteCarloSimulation(
   config: LeagueConfig,
   teams: Record<string, TeamRecord>,
   currentWeek: number,
-  simulations: number = 10000
+  simulations: number = 1000
 ): Record<string, ProbabilityModel> {
   const results: Record<string, ProbabilityModel> = {};
   const totalWeeks = 18; // NFL regular season weeks
   const remainingWeeks = totalWeeks - currentWeek;
+  
+  // Initialize counters for each player
+  const playerStats: Record<string, {
+    winsFirst: number;
+    winsTop3: number;
+    lossesFirst: number;
+    lossesTop3: number;
+    totalWins: number[];
+    totalLosses: number[];
+  }> = {};
 
-  Object.entries(config.players).forEach(([playerId, player]) => {
-    const winSimResults: number[] = [];
-    const lossSimResults: number[] = [];
-    let winsFirst = 0;
-    let winsTop3 = 0;
-    let lossesFirst = 0;
-    let lossesTop3 = 0;
+  Object.keys(config.players).forEach(playerId => {
+    playerStats[playerId] = {
+      winsFirst: 0,
+      winsTop3: 0,
+      lossesFirst: 0,
+      lossesTop3: 0,
+      totalWins: [],
+      totalLosses: []
+    };
+  });
 
-    // Run simulations
-    for (let i = 0; i < simulations; i++) {
+  console.log(`🎲 Running ${simulations} Monte Carlo simulations for ${Object.keys(config.players).length} players...`);
+  
+  // Run all simulations comparing all players
+  for (let sim = 0; sim < simulations; sim++) {
+    const simulatedPlayers: Array<{id: string, wins: number, losses: number}> = [];
+    
+    // Simulate each player's season
+    Object.entries(config.players).forEach(([playerId, player]) => {
       let simWins = 0;
       let simLosses = 0;
 
       player.teams.forEach((teamAbbr) => {
         const team = teams[teamAbbr];
         if (team) {
+          // Start with current wins/losses
           simWins += team.wins;
           simLosses += team.losses;
 
-          // Simulate remaining games based on ELO and win percentage
+          // Simulate remaining games
           for (let w = 0; w < remainingWeeks; w++) {
-            const winProb = team.elo / (team.elo + 1500); // Simplified probability
-            if (Math.random() < winProb) {
+            const winPct = team.winPct || 0.5; // Use actual win percentage or 50%
+            if (Math.random() < winPct) {
               simWins++;
             } else {
               simLosses++;
@@ -129,80 +151,87 @@ export function runMonteCarloSimulation(
         }
       });
 
-      winSimResults.push(simWins);
-      lossSimResults.push(simLosses);
-    }
-
-    // Sort results to find percentiles
-    winSimResults.sort((a, b) => b - a);
-    lossSimResults.sort((a, b) => b - a);
-
-    // Calculate probabilities
-    const allPlayerWins = Object.entries(config.players).map(([id, p]) => {
-      let wins = 0;
-      p.teams.forEach(t => {
-        const team = teams[t];
-        if (team) wins += team.wins;
-      });
-      return { id, wins };
+      simulatedPlayers.push({id: playerId, wins: simWins, losses: simLosses});
+      playerStats[playerId].totalWins.push(simWins);
+      playerStats[playerId].totalLosses.push(simLosses);
     });
 
-    const allPlayerLosses = Object.entries(config.players).map(([id, p]) => {
-      let losses = 0;
-      p.teams.forEach(t => {
-        const team = teams[t];
-        if (team) losses += team.losses;
-      });
-      return { id, losses };
+    // Rank players for this simulation
+    const winRanking = [...simulatedPlayers].sort((a, b) => b.wins - a.wins);
+    const lossRanking = [...simulatedPlayers].sort((a, b) => b.losses - a.losses);
+
+    // Count wins competition results
+    winRanking.forEach((player, index) => {
+      if (index === 0) playerStats[player.id].winsFirst++;
+      if (index < 3) playerStats[player.id].winsTop3++;
     });
 
-    // Calculate current ranks
-    allPlayerWins.sort((a, b) => b.wins - a.wins);
-    allPlayerLosses.sort((a, b) => b.losses - a.losses);
-    
+    // Count losses competition results
+    lossRanking.forEach((player, index) => {
+      if (index === 0) playerStats[player.id].lossesFirst++;
+      if (index < 3) playerStats[player.id].lossesTop3++;
+    });
+  }
+
+  // Calculate current standings
+  const allPlayerWins = Object.entries(config.players).map(([id, p]) => {
+    let wins = 0;
+    p.teams.forEach(t => {
+      const team = teams[t];
+      if (team) wins += team.wins;
+    });
+    return { id, wins };
+  });
+
+  const allPlayerLosses = Object.entries(config.players).map(([id, p]) => {
+    let losses = 0;
+    p.teams.forEach(t => {
+      const team = teams[t];
+      if (team) losses += team.losses;
+    });
+    return { id, losses };
+  });
+
+  allPlayerWins.sort((a, b) => b.wins - a.wins);
+  allPlayerLosses.sort((a, b) => b.losses - a.losses);
+
+  console.log('✅ Simulations complete, generating probability results...');
+  
+  // Generate results for each player
+  Object.entries(config.players).forEach(([playerId, player]) => {
+    const stats = playerStats[playerId];
     const currentWinRank = allPlayerWins.findIndex(p => p.id === playerId) + 1;
     const currentLossRank = allPlayerLosses.findIndex(p => p.id === playerId) + 1;
-
-    // Count simulation results
-    winSimResults.forEach((wins, idx) => {
-      if (idx === 0) winsFirst++;
-      if (idx < 3) winsTop3++;
-    });
-
-    lossSimResults.forEach((losses, idx) => {
-      if (idx === 0) lossesFirst++;
-      if (idx < 3) lossesTop3++;
-    });
-
-    const expectedWins = winSimResults.reduce((a, b) => a + b, 0) / simulations;
-    const expectedLosses = lossSimResults.reduce((a, b) => a + b, 0) / simulations;
+    
+    const expectedWins = stats.totalWins.reduce((a, b) => a + b, 0) / simulations;
+    const expectedLosses = stats.totalLosses.reduce((a, b) => a + b, 0) / simulations;
 
     results[playerId] = {
       player: player.name,
       simulations,
       winsCompetition: {
         currentRank: currentWinRank,
-        probabilityToWin: winsFirst / simulations,
-        probabilityTop3: winsTop3 / simulations,
+        probabilityToWin: stats.winsFirst / simulations,
+        probabilityTop3: stats.winsTop3 / simulations,
         expectedFinalWins: expectedWins,
         confidenceInterval: [
-          winSimResults[Math.floor(simulations * 0.25)],
-          winSimResults[Math.floor(simulations * 0.75)]
+          Math.min(...stats.totalWins),
+          Math.max(...stats.totalWins)
         ],
       },
       lossesCompetition: {
         currentRank: currentLossRank,
-        probabilityToWin: lossesFirst / simulations,
-        probabilityTop3: lossesTop3 / simulations,
+        probabilityToWin: stats.lossesFirst / simulations,
+        probabilityTop3: stats.lossesTop3 / simulations,
         expectedFinalLosses: expectedLosses,
         confidenceInterval: [
-          lossSimResults[Math.floor(simulations * 0.25)],
-          lossSimResults[Math.floor(simulations * 0.75)]
+          Math.min(...stats.totalLosses),
+          Math.max(...stats.totalLosses)
         ],
       },
       magicNumbers: {
-        winsToGuaranteeWinsTitle: Math.max(0, winSimResults[0] - allPlayerWins[0].wins + 1),
-        lossesToGuaranteeLossesTitle: Math.max(0, lossSimResults[0] - allPlayerLosses[0].losses + 1),
+        winsToGuaranteeWinsTitle: Math.max(0, Math.max(...stats.totalWins) - allPlayerWins[0].wins + 1),
+        lossesToGuaranteeLossesTitle: Math.max(0, Math.max(...stats.totalLosses) - allPlayerLosses[0].losses + 1),
       },
     };
   });

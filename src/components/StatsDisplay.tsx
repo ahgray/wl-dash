@@ -10,7 +10,30 @@ interface StatsDisplayProps {
 }
 
 const StatsDisplay: React.FC<StatsDisplayProps> = ({ config, teams, currentWeek }) => {
-  const probabilities = runMonteCarloSimulation(config, teams, currentWeek, 1000);
+  console.log('📊 StatsDisplay rendering with:', { 
+    playersCount: Object.keys(config.players).length, 
+    teamsCount: Object.keys(teams).length, 
+    currentWeek 
+  });
+  
+  let probabilities;
+  try {
+    probabilities = runMonteCarloSimulation(config, teams, currentWeek, 1000);
+    console.log('✅ Monte Carlo completed successfully');
+  } catch (error) {
+    console.error('❌ Monte Carlo simulation failed:', error);
+    // Fallback to simple probabilities
+    probabilities = {};
+    Object.keys(config.players).forEach(playerId => {
+      probabilities[playerId] = {
+        player: config.players[playerId].name,
+        simulations: 0,
+        winsCompetition: { currentRank: 1, probabilityToWin: 0.125, probabilityTop3: 0.375, expectedFinalWins: 8 },
+        lossesCompetition: { currentRank: 1, probabilityToWin: 0.125, probabilityTop3: 0.375, expectedFinalLosses: 8 },
+        magicNumbers: { winsToGuaranteeWinsTitle: 0, lossesToGuaranteeLossesTitle: 0 }
+      };
+    });
+  }
 
   const getTopProbabilities = () => {
     const winProbs = Object.entries(probabilities)
@@ -37,11 +60,19 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({ config, teams, currentWeek 
   const { winProbs, lossProbs } = getTopProbabilities();
 
   const totalGames = Object.values(teams).reduce(
-    (acc, team) => acc + team.wins + team.losses + team.ties,
+    (acc, team) => {
+      const wins = Number(team.wins) || 0;
+      const losses = Number(team.losses) || 0;
+      const ties = Number(team.ties) || 0;
+      console.log(`Team ${team.abbreviation}: wins=${wins}, losses=${losses}, ties=${ties}, types:`, typeof team.wins, typeof team.losses, typeof team.ties);
+      return acc + wins + losses + ties;
+    },
     0
   );
 
   const totalWins = Object.values(teams).reduce((acc, team) => acc + team.wins, 0);
+  
+  console.log('📊 Statistics:', { totalGames, totalWins, winRate: totalGames > 0 ? (totalWins / totalGames * 100).toFixed(1) : '0.0' });
 
   return (
     <div>

@@ -73,7 +73,10 @@ export async function fetchCurrentWeekScores(): Promise<{
       competitors.forEach((competitor) => {
         const abbr = competitor.team.abbreviation;
         const record = competitor.record?.[0]?.summary || '0-0';
-        const [wins, losses, ties = '0'] = record.split('-').map(Number);
+        const parts = record.split('-').map(Number);
+        const wins = parts[0] || 0;
+        const losses = parts[1] || 0;
+        const ties = parts[2] || 0;
         
         // Find opponent
         const opponent = competitors.find(c => c.team.abbreviation !== abbr);
