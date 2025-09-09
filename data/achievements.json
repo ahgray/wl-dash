@@ -1,5 +1,169 @@
 {
-  "lastCalculated": null,
-  "achievements": {},
-  "playerAchievements": {}
+  "lastCalculated": "2025-09-09T18:02:21.694Z",
+  "achievements": {
+    "first_win": {
+      "name": "First Victory",
+      "description": "Achieve your first team win of the season",
+      "icon": "🏆",
+      "rarity": "common",
+      "holders": []
+    },
+    "perfect_week": {
+      "name": "Perfect Week",
+      "description": "All 4 of your teams win in the same week",
+      "icon": "💎",
+      "rarity": "legendary",
+      "holders": [
+        "scallywagging"
+      ]
+    },
+    "disaster_week": {
+      "name": "Disaster Week",
+      "description": "All 4 of your teams lose in the same week",
+      "icon": "💀",
+      "rarity": "epic",
+      "holders": [
+        "geaux_jets"
+      ]
+    },
+    "comeback_kid": {
+      "name": "Comeback Kid",
+      "description": "Rise from last place to first place",
+      "icon": "🚀",
+      "rarity": "rare",
+      "holders": []
+    },
+    "early_leader": {
+      "name": "Early Leader",
+      "description": "Lead the wins competition after week 1",
+      "icon": "⚡",
+      "rarity": "uncommon",
+      "holders": [
+        "bony_tony"
+      ]
+    },
+    "win_streak": {
+      "name": "Win Streak",
+      "description": "Have 5 consecutive team wins",
+      "icon": "🔥",
+      "rarity": "rare",
+      "holders": []
+    },
+    "loss_streak": {
+      "name": "Loss Streak",
+      "description": "Have 5 consecutive team losses (sympathy badge)",
+      "icon": "❄️",
+      "rarity": "rare",
+      "holders": []
+    },
+    "underdog_victory": {
+      "name": "Underdog Victory",
+      "description": "Your team with the worst record beats a top team",
+      "icon": "🐶",
+      "rarity": "uncommon",
+      "holders": []
+    },
+    "consistency_king": {
+      "name": "Consistency King",
+      "description": "Maintain a win rate between 40-60% all season",
+      "icon": "⚖️",
+      "rarity": "rare",
+      "holders": []
+    },
+    "domination": {
+      "name": "Total Domination",
+      "description": "Lead both wins and losses competitions simultaneously",
+      "icon": "👑",
+      "rarity": "legendary",
+      "holders": [
+        "bony_tony"
+      ]
+    },
+    "balanced_portfolio": {
+      "name": "Balanced Portfolio",
+      "description": "Each of your 4 teams has at least 1 win and 1 loss",
+      "icon": "⚡",
+      "rarity": "common",
+      "holders": []
+    },
+    "rivalry_master": {
+      "name": "Rivalry Master",
+      "description": "Your teams beat division rivals 5+ times",
+      "icon": "⚔️",
+      "rarity": "epic",
+      "holders": [
+        "snakes",
+        "frozen_fruit"
+      ]
+    }
+  },
+  "playerAchievements": {
+    "bony_tony": {
+      "total": 2,
+      "earned": [
+        {
+          "achievement": "early_leader",
+          "earnedDate": "2025-09-09",
+          "context": "Leading wins competition after week 1"
+        },
+        {
+          "achievement": "domination",
+          "earnedDate": "2025-09-09",
+          "context": "Leading both wins and losses competitions"
+        }
+      ]
+    },
+    "snakes": {
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "rivalry_master",
+          "earnedDate": "2025-09-09",
+          "context": "3 divisional rivalry victories"
+        }
+      ]
+    },
+    "scallywagging": {
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "perfect_week",
+          "earnedDate": "2025-09-09",
+          "context": "All 4 teams won in week 1"
+        }
+      ]
+    },
+    "frozen_fruit": {
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "rivalry_master",
+          "earnedDate": "2025-09-09",
+          "context": "2 divisional rivalry victories"
+        }
+      ]
+    },
+    "hock_tua": {
+      "total": 0,
+      "earned": []
+    },
+    "regression": {
+      "total": 0,
+      "earned": []
+    },
+    "geaux_jets": {
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "disaster_week",
+          "earnedDate": "2025-09-09",
+          "context": "All 4 teams lost in week 1"
+        }
+      ]
+    },
+    "dicked_dallas": {
+      "total": 0,
+      "earned": []
+    }
+  }
 }

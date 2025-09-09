@@ -6,44 +6,44 @@
   "playoffStart": "2025-01-04",
   "superbowl": "2025-02-09",
   "players": {
-    "player1": {
-      "name": "John Smith",
-      "teams": ["KC", "BUF", "MIA", "NYJ"],
+    "bony_tony": {
+      "name": "Bony Tony",
+      "teams": ["NO", "LV", "DAL", "ARI"],
       "joinDate": "2025-08-01"
     },
-    "player2": {
-      "name": "Sarah Johnson",
-      "teams": ["SF", "LAR", "SEA", "ARI"],
+    "snakes": {
+      "name": "Snakes",
+      "teams": ["PHI", "LAC", "GB", "HOU"],
       "joinDate": "2025-08-01"
     },
-    "player3": {
-      "name": "Mike Davis",
-      "teams": ["DAL", "PHI", "NYG", "WAS"],
+    "scallywagging": {
+      "name": "Scallywagging Son of a B",
+      "teams": ["BUF", "TB", "DEN", "PIT"],
       "joinDate": "2025-08-01"
     },
-    "player4": {
-      "name": "Lisa Chen",
-      "teams": ["BAL", "PIT", "CIN", "CLE"],
+    "frozen_fruit": {
+      "name": "Frozen Fruit Syndrome Sufferer",
+      "teams": ["BAL", "SF", "WAS", "MIN"],
       "joinDate": "2025-08-01"
     },
-    "player5": {
-      "name": "Chris Wilson",
-      "teams": ["GB", "MIN", "CHI", "DET"],
+    "hock_tua": {
+      "name": "Hock Tua",
+      "teams": ["CAR", "IND", "ATL", "MIA"],
       "joinDate": "2025-08-01"
     },
-    "player6": {
-      "name": "Emma Rodriguez",
-      "teams": ["IND", "TEN", "HOU", "JAX"],
+    "regression": {
+      "name": "Regression to the Mean",
+      "teams": ["KC", "DET", "CIN", "LAR"],
       "joinDate": "2025-08-01"
     },
-    "player7": {
-      "name": "Alex Taylor",
-      "teams": ["DEN", "LV", "LAC", "NE"],
+    "geaux_jets": {
+      "name": "Geaux Jets",
+      "teams": ["CLE", "NYJ", "SEA", "CHI"],
       "joinDate": "2025-08-01"
     },
-    "player8": {
-      "name": "Jordan Lee",
-      "teams": ["TB", "NO", "ATL", "CAR"],
+    "dicked_dallas": {
+      "name": "Dicked Down in Dallas",
+      "teams": ["NYG", "TEN", "JAX", "NE"],
       "joinDate": "2025-08-01"
     }
   }
