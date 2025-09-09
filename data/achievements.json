@@ -1,5 +1,5 @@
 {
-  "lastCalculated": "2025-09-09T18:02:21.694Z",
+  "lastCalculated": "2025-09-09T20:09:23.031Z",
   "achievements": {
     "first_win": {
       "name": "First Victory",
@@ -13,18 +13,14 @@
       "description": "All 4 of your teams win in the same week",
       "icon": "💎",
       "rarity": "legendary",
-      "holders": [
-        "scallywagging"
-      ]
+      "holders": []
     },
     "disaster_week": {
       "name": "Disaster Week",
       "description": "All 4 of your teams lose in the same week",
       "icon": "💀",
       "rarity": "epic",
-      "holders": [
-        "geaux_jets"
-      ]
+      "holders": []
     },
     "comeback_kid": {
       "name": "Comeback Kid",
@@ -38,9 +34,7 @@
       "description": "Lead the wins competition after week 1",
       "icon": "⚡",
       "rarity": "uncommon",
-      "holders": [
-        "bony_tony"
-      ]
+      "holders": []
     },
     "win_streak": {
       "name": "Win Streak",
@@ -75,9 +69,7 @@
       "description": "Lead both wins and losses competitions simultaneously",
       "icon": "👑",
       "rarity": "legendary",
-      "holders": [
-        "bony_tony"
-      ]
+      "holders": []
     },
     "balanced_portfolio": {
       "name": "Balanced Portfolio",
@@ -91,15 +83,12 @@
       "description": "Your teams beat division rivals 5+ times",
       "icon": "⚔️",
       "rarity": "epic",
-      "holders": [
-        "snakes",
-        "frozen_fruit"
-      ]
+      "holders": []
     }
   },
   "playerAchievements": {
     "bony_tony": {
-      "total": 2,
+      "total": 3,
       "earned": [
         {
           "achievement": "early_leader",
@@ -110,60 +99,103 @@
           "achievement": "domination",
           "earnedDate": "2025-09-09",
           "context": "Leading both wins and losses competitions"
+        },
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 2 total wins"
         }
       ]
     },
     "snakes": {
-      "total": 1,
+      "total": 2,
       "earned": [
         {
           "achievement": "rivalry_master",
           "earnedDate": "2025-09-09",
           "context": "3 divisional rivalry victories"
+        },
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 3 total wins"
         }
       ]
     },
     "scallywagging": {
-      "total": 1,
+      "total": 2,
       "earned": [
         {
           "achievement": "perfect_week",
           "earnedDate": "2025-09-09",
           "context": "All 4 teams won in week 1"
+        },
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 4 total wins"
         }
       ]
     },
     "frozen_fruit": {
-      "total": 1,
+      "total": 2,
       "earned": [
         {
           "achievement": "rivalry_master",
           "earnedDate": "2025-09-09",
           "context": "2 divisional rivalry victories"
+        },
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 2 total wins"
         }
       ]
     },
     "hock_tua": {
-      "total": 0,
-      "earned": []
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 1 total wins"
+        }
+      ]
     },
     "regression": {
-      "total": 0,
-      "earned": []
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 2 total wins"
+        }
+      ]
     },
     "geaux_jets": {
-      "total": 1,
+      "total": 2,
       "earned": [
         {
           "achievement": "disaster_week",
           "earnedDate": "2025-09-09",
           "context": "All 4 teams lost in week 1"
+        },
+        {
+          "achievement": "early_leader",
+          "earnedDate": "2025-09-09",
+          "context": "Leading wins competition after week 1"
         }
       ]
     },
     "dicked_dallas": {
-      "total": 0,
-      "earned": []
+      "total": 1,
+      "earned": [
+        {
+          "achievement": "first_win",
+          "earnedDate": "2025-09-09",
+          "context": "First win achieved with 1 total wins"
+        }
+      ]
     }
   }
 }

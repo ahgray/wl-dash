@@ -274,8 +274,6 @@ body {
 .achievement-rare { color: var(--neon-green) !important; }
 .achievement-uncommon { color: var(--neon-yellow) !important; }
 .achievement-common { color: var(--secondary-text) !important; }
-  box-shadow: 0 2px 8px rgba(136, 0, 255, 0.3);
-}
 
 /* Rank Indicators */
 .rank-1 {

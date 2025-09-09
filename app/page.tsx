@@ -16,6 +16,11 @@ export default function Dashboard() {
   const [narratives, setNarratives] = useState<NarrativesData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   useEffect(() => {
     loadData();
@@ -54,6 +59,11 @@ export default function Dashboard() {
       setLoading(false);
     }
   };
+
+  // Prevent hydration mismatch by not rendering until client has mounted
+  if (!hasMounted) {
+    return null;
+  }
 
   if (loading) {
     return (

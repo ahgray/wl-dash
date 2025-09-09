@@ -93,13 +93,29 @@ export async function fetchCurrentWeekScores(): Promise<{
           gameScore = `${myScore}-${theirScore}`;
         }
         
+        // If ESPN records are 0 but we have game results, calculate from games
+        let actualWins = wins || 0;
+        let actualLosses = losses || 0;
+        let actualTies = ties || 0;
+        
+        if (actualWins === 0 && actualLosses === 0 && isGameComplete && result) {
+          // ESPN records not updated yet, use game results
+          if (result === 'W') {
+            actualWins = 1;
+          } else if (result === 'L') {
+            actualLosses = 1;
+          } else {
+            actualTies = 1;
+          }
+        }
+
         teams[abbr] = {
           name: competitor.team.displayName,
           abbreviation: abbr,
-          wins: wins || 0,
-          losses: losses || 0,
-          ties: ties || 0,
-          winPct: (wins || 0) / ((wins || 0) + (losses || 0) + (ties || 0)) || 0,
+          wins: actualWins,
+          losses: actualLosses,
+          ties: actualTies,
+          winPct: actualWins / (actualWins + actualLosses + actualTies) || 0,
           elo: 1500, // Default ELO, will be calculated properly
           previousElo: 1500,
           lastGame: isGameComplete && result ? {
