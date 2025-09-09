@@ -1,0 +1,50 @@
+{
+  "leagueName": "Football Winners and Jets",
+  "season": "2025",
+  "seasonStart": "2025-09-04",
+  "seasonEnd": "2025-12-29",
+  "playoffStart": "2025-01-04",
+  "superbowl": "2025-02-09",
+  "players": {
+    "player1": {
+      "name": "John Smith",
+      "teams": ["KC", "BUF", "MIA", "NYJ"],
+      "joinDate": "2025-08-01"
+    },
+    "player2": {
+      "name": "Sarah Johnson",
+      "teams": ["SF", "LAR", "SEA", "ARI"],
+      "joinDate": "2025-08-01"
+    },
+    "player3": {
+      "name": "Mike Davis",
+      "teams": ["DAL", "PHI", "NYG", "WAS"],
+      "joinDate": "2025-08-01"
+    },
+    "player4": {
+      "name": "Lisa Chen",
+      "teams": ["BAL", "PIT", "CIN", "CLE"],
+      "joinDate": "2025-08-01"
+    },
+    "player5": {
+      "name": "Chris Wilson",
+      "teams": ["GB", "MIN", "CHI", "DET"],
+      "joinDate": "2025-08-01"
+    },
+    "player6": {
+      "name": "Emma Rodriguez",
+      "teams": ["IND", "TEN", "HOU", "JAX"],
+      "joinDate": "2025-08-01"
+    },
+    "player7": {
+      "name": "Alex Taylor",
+      "teams": ["DEN", "LV", "LAC", "NE"],
+      "joinDate": "2025-08-01"
+    },
+    "player8": {
+      "name": "Jordan Lee",
+      "teams": ["TB", "NO", "ATL", "CAR"],
+      "joinDate": "2025-08-01"
+    }
+  }
+}

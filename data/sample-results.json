@@ -1,0 +1,622 @@
+{
+  "lastUpdated": "2025-09-09T21:30:00Z",
+  "currentWeek": 1,
+  "gamesInProgress": [],
+  "nextUpdate": "2025-09-10T01:00:00Z",
+  "teams": {
+    "KC": {
+      "name": "Kansas City Chiefs",
+      "abbreviation": "KC",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1520,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-09",
+        "opponent": "BAL",
+        "result": "W",
+        "score": "27-20",
+        "wasHome": true
+      },
+      "nextGame": {
+        "date": "2025-09-15",
+        "opponent": "CIN",
+        "isHome": false,
+        "odds": -3.5
+      },
+      "remainingSchedule": ["CIN", "ATL", "LAC", "NO"],
+      "strengthOfSchedule": 0.485
+    },
+    "BUF": {
+      "name": "Buffalo Bills",
+      "abbreviation": "BUF",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1515,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-09",
+        "opponent": "ARI",
+        "result": "W",
+        "score": "31-17",
+        "wasHome": true
+      },
+      "remainingSchedule": ["MIA", "JAX", "TEN", "SEA"],
+      "strengthOfSchedule": 0.452
+    },
+    "MIA": {
+      "name": "Miami Dolphins",
+      "abbreviation": "MIA",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1480,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "JAX",
+        "result": "L",
+        "score": "14-17",
+        "wasHome": false
+      },
+      "remainingSchedule": ["BUF", "SEA", "TEN", "HOU"],
+      "strengthOfSchedule": 0.510
+    },
+    "NYJ": {
+      "name": "New York Jets",
+      "abbreviation": "NYJ",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1485,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-09",
+        "opponent": "SF",
+        "result": "L",
+        "score": "19-32",
+        "wasHome": true
+      },
+      "remainingSchedule": ["TEN", "NE", "DEN", "BUF"],
+      "strengthOfSchedule": 0.478
+    },
+    "SF": {
+      "name": "San Francisco 49ers",
+      "abbreviation": "SF",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1515,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-09",
+        "opponent": "NYJ",
+        "result": "W",
+        "score": "32-19",
+        "wasHome": false
+      },
+      "remainingSchedule": ["MIN", "LAR", "NE", "ARI"],
+      "strengthOfSchedule": 0.495
+    },
+    "LAR": {
+      "name": "Los Angeles Rams",
+      "abbreviation": "LAR",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "DET",
+        "result": "L",
+        "score": "20-26",
+        "wasHome": true
+      },
+      "remainingSchedule": ["SF", "CIN", "CHI", "SEA"],
+      "strengthOfSchedule": 0.502
+    },
+    "SEA": {
+      "name": "Seattle Seahawks",
+      "abbreviation": "SEA",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "DEN",
+        "result": "W",
+        "score": "26-20",
+        "wasHome": true
+      },
+      "remainingSchedule": ["NE", "MIA", "NYG", "LAR"],
+      "strengthOfSchedule": 0.468
+    },
+    "ARI": {
+      "name": "Arizona Cardinals",
+      "abbreviation": "ARI",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1485,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-09",
+        "opponent": "BUF",
+        "result": "L",
+        "score": "17-31",
+        "wasHome": false
+      },
+      "remainingSchedule": ["LAR", "DET", "WAS", "SF"],
+      "strengthOfSchedule": 0.520
+    },
+    "DAL": {
+      "name": "Dallas Cowboys",
+      "abbreviation": "DAL",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1515,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "CLE",
+        "result": "W",
+        "score": "33-17",
+        "wasHome": true
+      },
+      "remainingSchedule": ["NO", "BAL", "NYG", "PIT"],
+      "strengthOfSchedule": 0.515
+    },
+    "PHI": {
+      "name": "Philadelphia Eagles",
+      "abbreviation": "PHI",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-06",
+        "opponent": "GB",
+        "result": "W",
+        "score": "34-29",
+        "wasHome": false
+      },
+      "remainingSchedule": ["NO", "TB", "LAR", "NYJ"],
+      "strengthOfSchedule": 0.482
+    },
+    "NYG": {
+      "name": "New York Giants",
+      "abbreviation": "NYG",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "MIN",
+        "result": "L",
+        "score": "6-28",
+        "wasHome": true
+      },
+      "remainingSchedule": ["WAS", "CLE", "DAL", "SEA"],
+      "strengthOfSchedule": 0.498
+    },
+    "WAS": {
+      "name": "Washington Commanders",
+      "abbreviation": "WAS",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1485,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "TB",
+        "result": "L",
+        "score": "20-37",
+        "wasHome": false
+      },
+      "remainingSchedule": ["NYG", "BUF", "ARI", "PHI"],
+      "strengthOfSchedule": 0.508
+    },
+    "BAL": {
+      "name": "Baltimore Ravens",
+      "abbreviation": "BAL",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1480,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-05",
+        "opponent": "KC",
+        "result": "L",
+        "score": "20-27",
+        "wasHome": false
+      },
+      "remainingSchedule": ["HOU", "DAL", "BUF", "CIN"],
+      "strengthOfSchedule": 0.525
+    },
+    "PIT": {
+      "name": "Pittsburgh Steelers",
+      "abbreviation": "PIT",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "ATL",
+        "result": "W",
+        "score": "18-10",
+        "wasHome": true
+      },
+      "remainingSchedule": ["DEN", "LAC", "IND", "DAL"],
+      "strengthOfSchedule": 0.488
+    },
+    "CIN": {
+      "name": "Cincinnati Bengals",
+      "abbreviation": "CIN",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "NE",
+        "result": "L",
+        "score": "10-16",
+        "wasHome": true
+      },
+      "remainingSchedule": ["KC", "LAR", "CAR", "BAL"],
+      "strengthOfSchedule": 0.512
+    },
+    "CLE": {
+      "name": "Cleveland Browns",
+      "abbreviation": "CLE",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1485,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "DAL",
+        "result": "L",
+        "score": "17-33",
+        "wasHome": false
+      },
+      "remainingSchedule": ["JAX", "NYG", "LV", "WAS"],
+      "strengthOfSchedule": 0.465
+    },
+    "GB": {
+      "name": "Green Bay Packers",
+      "abbreviation": "GB",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-06",
+        "opponent": "PHI",
+        "result": "L",
+        "score": "29-34",
+        "wasHome": true
+      },
+      "remainingSchedule": ["IND", "TEN", "MIN", "LAR"],
+      "strengthOfSchedule": 0.475
+    },
+    "MIN": {
+      "name": "Minnesota Vikings",
+      "abbreviation": "MIN",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "NYG",
+        "result": "W",
+        "score": "28-6",
+        "wasHome": false
+      },
+      "remainingSchedule": ["SF", "HOU", "GB", "NYJ"],
+      "strengthOfSchedule": 0.492
+    },
+    "CHI": {
+      "name": "Chicago Bears",
+      "abbreviation": "CHI",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "TEN",
+        "result": "W",
+        "score": "24-17",
+        "wasHome": true
+      },
+      "remainingSchedule": ["HOU", "IND", "LAR", "CAR"],
+      "strengthOfSchedule": 0.472
+    },
+    "DET": {
+      "name": "Detroit Lions",
+      "abbreviation": "DET",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "LAR",
+        "result": "W",
+        "score": "26-20",
+        "wasHome": false
+      },
+      "remainingSchedule": ["TB", "ARI", "SEA", "DAL"],
+      "strengthOfSchedule": 0.505
+    },
+    "IND": {
+      "name": "Indianapolis Colts",
+      "abbreviation": "IND",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "HOU",
+        "result": "W",
+        "score": "29-27",
+        "wasHome": false
+      },
+      "remainingSchedule": ["GB", "CHI", "PIT", "TEN"],
+      "strengthOfSchedule": 0.490
+    },
+    "TEN": {
+      "name": "Tennessee Titans",
+      "abbreviation": "TEN",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "CHI",
+        "result": "L",
+        "score": "17-24",
+        "wasHome": false
+      },
+      "remainingSchedule": ["NYJ", "GB", "MIA", "IND"],
+      "strengthOfSchedule": 0.478
+    },
+    "HOU": {
+      "name": "Houston Texans",
+      "abbreviation": "HOU",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "IND",
+        "result": "L",
+        "score": "27-29",
+        "wasHome": true
+      },
+      "remainingSchedule": ["CHI", "MIN", "JAX", "MIA"],
+      "strengthOfSchedule": 0.488
+    },
+    "JAX": {
+      "name": "Jacksonville Jaguars",
+      "abbreviation": "JAX",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1520,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "MIA",
+        "result": "W",
+        "score": "17-14",
+        "wasHome": true
+      },
+      "remainingSchedule": ["CLE", "BUF", "HOU", "TEN"],
+      "strengthOfSchedule": 0.480
+    },
+    "DEN": {
+      "name": "Denver Broncos",
+      "abbreviation": "DEN",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "SEA",
+        "result": "L",
+        "score": "20-26",
+        "wasHome": false
+      },
+      "remainingSchedule": ["PIT", "TB", "NYJ", "KC"],
+      "strengthOfSchedule": 0.508
+    },
+    "LV": {
+      "name": "Las Vegas Raiders",
+      "abbreviation": "LV",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1485,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "LAC",
+        "result": "L",
+        "score": "10-22",
+        "wasHome": true
+      },
+      "remainingSchedule": ["BAL", "CAR", "CLE", "DEN"],
+      "strengthOfSchedule": 0.472
+    },
+    "LAC": {
+      "name": "Los Angeles Chargers",
+      "abbreviation": "LAC",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1515,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "LV",
+        "result": "W",
+        "score": "22-10",
+        "wasHome": false
+      },
+      "remainingSchedule": ["CAR", "PIT", "KC", "CLE"],
+      "strengthOfSchedule": 0.502
+    },
+    "NE": {
+      "name": "New England Patriots",
+      "abbreviation": "NE",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1510,
+      "previousElo": 1495,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "CIN",
+        "result": "W",
+        "score": "16-10",
+        "wasHome": false
+      },
+      "remainingSchedule": ["SEA", "NYJ", "SF", "MIA"],
+      "strengthOfSchedule": 0.498
+    },
+    "TB": {
+      "name": "Tampa Bay Buccaneers",
+      "abbreviation": "TB",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1515,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "WAS",
+        "result": "W",
+        "score": "37-20",
+        "wasHome": true
+      },
+      "remainingSchedule": ["DET", "PHI", "DEN", "ATL"],
+      "strengthOfSchedule": 0.510
+    },
+    "NO": {
+      "name": "New Orleans Saints",
+      "abbreviation": "NO",
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "winPct": 1.000,
+      "elo": 1515,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "CAR",
+        "result": "W",
+        "score": "47-10",
+        "wasHome": false
+      },
+      "remainingSchedule": ["DAL", "PHI", "ATL", "KC"],
+      "strengthOfSchedule": 0.522
+    },
+    "ATL": {
+      "name": "Atlanta Falcons",
+      "abbreviation": "ATL",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1490,
+      "previousElo": 1505,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "PIT",
+        "result": "L",
+        "score": "10-18",
+        "wasHome": false
+      },
+      "remainingSchedule": ["PHI", "KC", "NO", "TB"],
+      "strengthOfSchedule": 0.528
+    },
+    "CAR": {
+      "name": "Carolina Panthers",
+      "abbreviation": "CAR",
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "winPct": 0.000,
+      "elo": 1485,
+      "previousElo": 1500,
+      "lastGame": {
+        "date": "2025-09-08",
+        "opponent": "NO",
+        "result": "L",
+        "score": "10-47",
+        "wasHome": true
+      },
+      "remainingSchedule": ["LAC", "LV", "CIN", "CHI"],
+      "strengthOfSchedule": 0.482
+    }
+  }
+}
