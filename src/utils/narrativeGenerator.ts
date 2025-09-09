@@ -29,8 +29,10 @@ export async function generateWeeklyNarrative(
     // Analyze the week's data
     const context = analyzeWeekData(config, teams, standings, week);
     
+    console.log('🔥 About to call Grok API...');
     // Generate narrative using Grok API
     const narrative = await callGrokAPI(context);
+    console.log('✅ Grok API succeeded!');
     
     return {
       title: narrative.title,
@@ -42,7 +44,8 @@ export async function generateWeeklyNarrative(
       season: config.season
     };
   } catch (error) {
-    console.error('Error generating narrative:', error);
+    console.error('❌ Error generating narrative:', error);
+    console.log('🔄 Using fallback narrative...');
     
     // Fallback to template-based narrative
     return generateFallbackNarrative(config, teams, standings, week);
@@ -110,64 +113,58 @@ async function callGrokAPI(context: NarrativeContext): Promise<{
     throw new Error('Grok API key not configured');
   }
 
-  const prompt = buildNarrativePrompt(context);
-
-  const response = await fetch('https://api.x.ai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: 'grok-4-0709',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a witty sports commentator writing weekly updates for a fantasy NFL league. Write engaging, entertaining narratives that capture the drama and excitement of the competition. Use humor and personality while staying factual about the data.'
-        },
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      max_tokens: 800,
-      temperature: 0.7
-    })
+  const OpenAI = (await import('openai')).default;
+  
+  const client = new OpenAI({
+    baseURL: "https://api.x.ai/v1",
+    apiKey: apiKey,
   });
 
-  if (!response.ok) {
-    throw new Error(`Grok API error: ${response.statusText}`);
-  }
+  const prompt = buildNarrativePrompt(context);
 
-  const data = await response.json();
-  const generatedText = data.choices?.[0]?.message?.content || '';
+  console.log('🚀 Making Grok API call...');
+  const completion = await client.chat.completions.create({
+    model: 'grok-4-0709',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a sports commentator for a fantasy NFL league with two separate competitions: one awarding a prize for most total wins, and another awarding a prize for most total losses. Write factual, entertaining narratives that mention both competitions without bias.'
+      },
+      {
+        role: 'user',
+        content: prompt
+      }
+    ],
+    max_tokens: 800,
+    temperature: 0.7
+  });
+
+  console.log('✅ Grok API response received');
+  const generatedText = completion.choices[0]?.message?.content || '';
 
   // Parse the generated content
   return parseNarrativeResponse(generatedText);
 }
 
 function buildNarrativePrompt(context: NarrativeContext): string {
-  return `Write a weekly narrative for "${context.leagueName}" fantasy NFL league, Week ${context.week} of the ${context.season} season.
+  return `Write a weekly narrative for "${context.leagueName}" Week ${context.week}.
 
-Current Standings:
+This league has TWO competitions with separate prizes:
+- MOST WINS PRIZE: Currently led by ${context.topPerformers.mostWins.playerName} with ${context.topPerformers.mostWins.totalWins} wins
+- MOST LOSSES PRIZE: Currently led by ${context.topPerformers.mostLosses.playerName} with ${context.topPerformers.mostLosses.totalLosses} losses
+
+Current standings:
 ${context.players.map((p, i) => 
-  `${i + 1}. ${p.playerName}: ${p.totalWins}W-${p.totalLosses}L (${(p.winPercentage * 100).toFixed(1)}%)`
+  `${i + 1}. ${p.playerName}: ${p.totalWins}W-${p.totalLosses}L`
 ).join('\n')}
 
-Key Storylines:
-- ${context.topPerformers.mostWins.playerName} leads in total wins (${context.topPerformers.mostWins.totalWins})
-- ${context.topPerformers.mostLosses.playerName} leads in total losses (${context.topPerformers.mostLosses.totalLosses})
-${context.weekHighlights.perfectWeeks ? `- Perfect weeks achieved by: ${context.weekHighlights.perfectWeeks.join(', ')}` : ''}
-${context.weekHighlights.disasterWeeks ? `- Disaster weeks suffered by: ${context.weekHighlights.disasterWeeks.join(', ')}` : ''}
-${context.weekHighlights.tightRaces ? `- ${context.weekHighlights.tightRaces}` : ''}
+Write a 200-word narrative that:
+1. Has an engaging title
+2. Mentions both competitions and their current leaders
+3. Covers other notable performances
+4. Looks ahead to next week
 
-Write a compelling 2-3 paragraph narrative with:
-1. A catchy title (on first line)
-2. Opening paragraph setting the scene
-3. Key developments and storylines
-4. Looking ahead commentary
-
-Keep it fun, engaging, and around 200-300 words total.`;
+Keep it entertaining but factual. Both competitions are legitimate ways to win prizes in this league.`;
 }
 
 function parseNarrativeResponse(text: string): {
