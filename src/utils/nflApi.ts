@@ -61,12 +61,37 @@ export async function fetchCurrentWeekScores(): Promise<{
     
     const teams: Record<string, TeamRecord> = {};
     
-    // Process each game to extract team records
+    // Process each game to extract team records and game details
     games.forEach((game: ESPNGame) => {
-      game.competitions?.[0]?.competitors?.forEach((competitor) => {
+      const competition = game.competitions?.[0];
+      if (!competition) return;
+
+      const competitors = competition.competitors || [];
+      const gameStatus = competition.status?.type?.name || 'unknown';
+      const isGameComplete = gameStatus === 'STATUS_FINAL';
+
+      competitors.forEach((competitor) => {
         const abbr = competitor.team.abbreviation;
         const record = competitor.record?.[0]?.summary || '0-0';
         const [wins, losses, ties = '0'] = record.split('-').map(Number);
+        
+        // Find opponent
+        const opponent = competitors.find(c => c.team.abbreviation !== abbr);
+        const opponentAbbr = opponent?.team.abbreviation || '';
+        
+        // Determine game result if completed
+        let result: 'W' | 'L' | 'T' | null = null;
+        let gameScore = '';
+        if (isGameComplete && opponent) {
+          const myScore = parseInt(competitor.score || '0');
+          const theirScore = parseInt(opponent.score || '0');
+          
+          if (myScore > theirScore) result = 'W';
+          else if (myScore < theirScore) result = 'L';
+          else result = 'T';
+          
+          gameScore = `${myScore}-${theirScore}`;
+        }
         
         teams[abbr] = {
           name: competitor.team.displayName,
@@ -77,6 +102,13 @@ export async function fetchCurrentWeekScores(): Promise<{
           winPct: (wins || 0) / ((wins || 0) + (losses || 0) + (ties || 0)) || 0,
           elo: 1500, // Default ELO, will be calculated properly
           previousElo: 1500,
+          lastGame: isGameComplete && result ? {
+            date: new Date(competition.date).toISOString().split('T')[0],
+            opponent: opponentAbbr,
+            result: result,
+            score: gameScore,
+            wasHome: competitor.homeAway === 'home'
+          } : undefined,
           remainingSchedule: [],
           strengthOfSchedule: 0.5,
         };
@@ -100,10 +132,41 @@ export async function fetchTeamSchedule(teamId: string): Promise<any> {
   }
 }
 
-export async function fetchTeamStandings(): Promise<any> {
+export async function fetchTeamStandings(): Promise<Record<string, TeamRecord> | null> {
   try {
     const response = await axios.get(`${ESPN_API_BASE}/standings`);
-    return response.data;
+    const standings = response.data;
+    const teams: Record<string, TeamRecord> = {};
+    
+    // ESPN standings API returns different structure, need to parse
+    if (standings?.children) {
+      standings.children.forEach((conference: any) => {
+        conference.standings?.entries?.forEach((entry: any) => {
+          const team = entry.team;
+          const stats = entry.stats;
+          
+          const abbr = team.abbreviation;
+          const wins = stats?.find((s: any) => s.name === 'wins')?.value || 0;
+          const losses = stats?.find((s: any) => s.name === 'losses')?.value || 0;
+          const ties = stats?.find((s: any) => s.name === 'ties')?.value || 0;
+          
+          teams[abbr] = {
+            name: team.displayName,
+            abbreviation: abbr,
+            wins,
+            losses,
+            ties,
+            winPct: wins / (wins + losses + ties) || 0,
+            elo: 1500,
+            previousElo: 1500,
+            remainingSchedule: [],
+            strengthOfSchedule: 0.5,
+          };
+        });
+      });
+    }
+    
+    return teams;
   } catch (error) {
     console.error('Error fetching standings:', error);
     return null;
@@ -126,4 +189,66 @@ export function getTeamLogo(abbreviation: string): string {
   const teamId = TEAM_ID_MAP[abbreviation];
   if (!teamId) return '';
   return `https://a.espncdn.com/i/teamlogos/nfl/500/${abbreviation.toLowerCase()}.png`;
+}
+
+export async function fetchNFLData(): Promise<{
+  currentWeek: number;
+  teams: Record<string, TeamRecord>;
+  lastUpdated: string;
+}> {
+  const { withCache, CacheKeys } = await import('./cache');
+  
+  return withCache(
+    CacheKeys.NFL_DATA,
+    async () => {
+      try {
+        // Fetch both scoreboard and standings data in parallel
+        const [scoreboardData, standingsData] = await Promise.all([
+          fetchCurrentWeekScores().catch(() => null),
+          fetchTeamStandings().catch(() => null)
+        ]);
+
+        const currentWeek = scoreboardData?.week || 1;
+        let teams: Record<string, TeamRecord> = {};
+
+        // Start with standings data for accurate records
+        if (standingsData) {
+          teams = { ...standingsData };
+        }
+
+        // Enhance with recent game information from scoreboard
+        if (scoreboardData?.teams) {
+          Object.entries(scoreboardData.teams).forEach(([abbr, scoreboardTeam]) => {
+            if (teams[abbr]) {
+              // Merge scoreboard data with standings data
+              teams[abbr] = {
+                ...teams[abbr],
+                lastGame: scoreboardTeam.lastGame,
+                // Use scoreboard record if standings failed
+                ...(standingsData ? {} : {
+                  wins: scoreboardTeam.wins,
+                  losses: scoreboardTeam.losses,
+                  ties: scoreboardTeam.ties,
+                  winPct: scoreboardTeam.winPct
+                })
+              };
+            } else {
+              // Fallback to scoreboard data if standings missing
+              teams[abbr] = scoreboardTeam;
+            }
+          });
+        }
+
+        return {
+          currentWeek,
+          teams,
+          lastUpdated: new Date().toISOString()
+        };
+      } catch (error) {
+        console.error('Error fetching NFL data:', error);
+        throw new Error('Failed to fetch NFL data');
+      }
+    },
+    30 // Cache for 30 minutes during game days
+  );
 }

@@ -63,13 +63,32 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                 </div>
                 <div className="flex items-center gap-2">
                   {playerAchievements.length > 0 && (
-                    <div className="achievement-badge">
+                    <div className="achievement-badge" title={`${playerAchievements.length} achievements earned`}>
                       <Award className="w-3 h-3" />
                       <span className="text-xs">
                         {playerAchievements.length}
                       </span>
                     </div>
                   )}
+                  {playerAchievements.slice(0, 3).map((achievement, idx) => {
+                    const achievementData = achievements?.achievements?.[achievement.achievement];
+                    if (!achievementData) return null;
+                    
+                    return (
+                      <div 
+                        key={achievement.achievement}
+                        className={`text-sm ${
+                          achievementData.rarity === 'legendary' ? 'text-neon-purple' :
+                          achievementData.rarity === 'epic' ? 'text-neon-blue' :
+                          achievementData.rarity === 'rare' ? 'text-neon-green' :
+                          'text-neon-yellow'
+                        }`}
+                        title={`${achievementData.name}: ${achievementData.description}`}
+                      >
+                        {achievementData.icon}
+                      </div>
+                    );
+                  })}
                   <div className="text-right">
                     <div className="text-xs text-secondary-text">Current Rank</div>
                     <div className="font-display font-bold text-lg text-neon-green">

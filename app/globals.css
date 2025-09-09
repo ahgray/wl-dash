@@ -259,6 +259,21 @@ body {
   font-weight: 600;
   color: white;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+  cursor: help;
+}
+
+.achievement-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(136, 0, 255, 0.3);
+}
+
+/* Achievement rarity colors for icons */
+.achievement-legendary { color: var(--neon-purple) !important; }
+.achievement-epic { color: var(--neon-blue) !important; }
+.achievement-rare { color: var(--neon-green) !important; }
+.achievement-uncommon { color: var(--neon-yellow) !important; }
+.achievement-common { color: var(--secondary-text) !important; }
   box-shadow: 0 2px 8px rgba(136, 0, 255, 0.3);
 }
 
@@ -320,6 +335,49 @@ body {
 
 .loading-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mobile-first responsive design improvements */
+@media (max-width: 640px) {
+  .stat-card {
+    padding: 1rem;
+  }
+  
+  .player-card {
+    padding: 1rem;
+  }
+  
+  .leaderboard-card {
+    padding: 1rem;
+  }
+  
+  /* Improve touch targets on mobile */
+  button, .btn-ghost {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text readability on small screens */
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  /* Ensure no horizontal overflow */
+  .container-constraint {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  /* Better mobile spacing for player cards */
+  .player-card .flex.items-center.justify-between {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .player-card .text-right {
+    align-self: flex-end;
+  }
 }
 
 /* Responsive Grid System */
