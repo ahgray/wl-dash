@@ -1,4 +1,4 @@
-# Football Winners and Jets Dashboard
+# Winners Losers and the Jets Dashboard
 
 A real-time fantasy NFL dashboard where 8 players compete in both wins and losses competitions throughout the 2025 NFL season. Each player selects 4 teams and tracks their performance with advanced analytics, Monte Carlo simulations, and achievement tracking.
 

@@ -19,7 +19,7 @@
    GROK_API_KEY=your_grok_api_key_here
    NFL_API_KEY=optional_nfl_api_key
    ODDS_API_KEY=optional_odds_api_key
-   NEXT_PUBLIC_LEAGUE_NAME="Football Winners and Jets"
+   NEXT_PUBLIC_LEAGUE_NAME="Winners Losers and the Jets"
    NEXT_PUBLIC_SEASON_YEAR="2025"
    NEXT_PUBLIC_APP_URL=https://your-app.vercel.app
    ```

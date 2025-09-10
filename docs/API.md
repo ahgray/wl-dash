@@ -1,6 +1,6 @@
 # API Documentation
 
-This document covers the ESPN API integration and internal data processing APIs used in the Football Winners and Jets Dashboard.
+This document covers the ESPN API integration and internal data processing APIs used in the Winners Losers and the Jets Dashboard.
 
 ## ESPN NFL API Integration
 

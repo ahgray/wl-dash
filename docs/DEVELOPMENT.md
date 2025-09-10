@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers common development scenarios, troubleshooting, and best practices for working on the Football Winners and Jets Dashboard.
+This guide covers common development scenarios, troubleshooting, and best practices for working on the Winners Losers and the Jets Dashboard.
 
 ## 🛠️ Development Setup
 

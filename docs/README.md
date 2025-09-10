@@ -1,6 +1,6 @@
 # Documentation Index
 
-This directory contains comprehensive documentation for the Football Winners and Jets Dashboard project.
+This directory contains comprehensive documentation for the Winners Losers and the Jets Dashboard project.
 
 ## 📚 Available Documentation
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Football Winners and Jets - Fantasy Dashboard',
+  title: 'Winners Losers and the Jets - Fantasy Dashboard',
   description: 'Track your teams in the ultimate wins and losses fantasy competition',
 };
 

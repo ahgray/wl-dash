@@ -1,0 +1,4 @@
+- Need to update league name to "Winners Losers and the Jets" not "Winners Losers and the Jets"
+- The AI narrative is including the word count in its output, "Word count: 218" that shouldn't be there.
+- In the player roster I see an Icon for number of Acheievements and then additional icons for what are presumably achievements but there's currently no way to see what they are.
+- The player roster should list players in decending order of current calculated win probability, I.e Right now it would go Scallywagging, Geaux Jet, Snakes.

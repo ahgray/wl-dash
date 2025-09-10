@@ -1,6 +1,6 @@
 # Monte Carlo Simulation Documentation
 
-This document explains the Monte Carlo simulation algorithm used to predict season outcomes in the Football Winners and Jets Dashboard.
+This document explains the Monte Carlo simulation algorithm used to predict season outcomes in the Winners Losers and the Jets Dashboard.
 
 ## Overview
 
