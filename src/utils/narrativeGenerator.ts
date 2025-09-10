@@ -179,7 +179,11 @@ function parseNarrativeResponse(text: string): {
   }
 
   const title = lines[0].replace(/^#+\s*/, '').trim();
-  const content = lines.slice(1).join('\n\n').trim();
+  let content = lines.slice(1).join('\n\n').trim();
+  
+  // Remove word count from the end of the content
+  content = content.replace(/\(Word count:\s*\d+\)$/i, '').trim();
+  content = content.replace(/Word count:\s*\d+$/i, '').trim();
 
   return {
     title: title || 'Weekly Update',
