@@ -6,7 +6,7 @@ import Leaderboards from '@/components/Leaderboards';
 import PlayerCards from '@/components/PlayerCards';
 import StatsDisplay from '@/components/StatsDisplay';
 import WeeklyNarrative from '@/components/WeeklyNarrative';
-import { calculateStandings } from '@/utils/calculations';
+import { calculateStandings, runMonteCarloSimulation } from '@/utils/calculations';
 
 export default function Dashboard() {
   const [config, setConfig] = useState<LeagueConfig | null>(null);
@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [history, setHistory] = useState<History | null>(null);
   const [achievements, setAchievements] = useState<AchievementsData | null>(null);
   const [narratives, setNarratives] = useState<NarrativesData | null>(null);
+  const [monteCarloResults, setMonteCarloResults] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
@@ -52,6 +53,17 @@ export default function Dashboard() {
       setHistory(historyData);
       setAchievements(achievementsData);
       setNarratives(narrativesData);
+
+      // Run Monte Carlo simulation once for both components
+      if (configData && resultsData?.teams) {
+        try {
+          const mcResults = runMonteCarloSimulation(configData, resultsData.teams, resultsData.currentWeek, 1000);
+          setMonteCarloResults(mcResults);
+        } catch (error) {
+          console.error('❌ Monte Carlo simulation failed:', error);
+          setMonteCarloResults(null);
+        }
+      }
     } catch (err) {
       console.error('Error loading data:', err);
       setError('Failed to load dashboard data');
@@ -154,6 +166,7 @@ export default function Dashboard() {
               config={config}
               teams={results.teams}
               currentWeek={results.currentWeek}
+              monteCarloResults={monteCarloResults}
             />
           </div>
         )}
@@ -166,6 +179,8 @@ export default function Dashboard() {
               teams={results?.teams || {}}
               standings={standings.winsLeaderboard}
               achievements={achievements}
+              currentWeek={results?.currentWeek || 1}
+              monteCarloResults={monteCarloResults}
             />
           </div>
         )}

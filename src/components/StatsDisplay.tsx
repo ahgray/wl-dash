@@ -7,9 +7,10 @@ interface StatsDisplayProps {
   config: LeagueConfig;
   teams: Record<string, TeamRecord>;
   currentWeek: number;
+  monteCarloResults?: Record<string, any> | null;
 }
 
-const StatsDisplay: React.FC<StatsDisplayProps> = ({ config, teams, currentWeek }) => {
+const StatsDisplay: React.FC<StatsDisplayProps> = ({ config, teams, currentWeek, monteCarloResults }) => {
   console.log('📊 StatsDisplay rendering with:', { 
     playersCount: Object.keys(config.players).length, 
     teamsCount: Object.keys(teams).length, 
@@ -17,22 +18,25 @@ const StatsDisplay: React.FC<StatsDisplayProps> = ({ config, teams, currentWeek 
   });
   
   let probabilities;
-  try {
-    probabilities = runMonteCarloSimulation(config, teams, currentWeek, 1000);
-    console.log('✅ Monte Carlo completed successfully');
-  } catch (error) {
-    console.error('❌ Monte Carlo simulation failed:', error);
-    // Fallback to simple probabilities
-    probabilities = {};
-    Object.keys(config.players).forEach(playerId => {
-      probabilities[playerId] = {
-        player: config.players[playerId].name,
-        simulations: 0,
-        winsCompetition: { currentRank: 1, probabilityToWin: 0.125, probabilityTop3: 0.375, expectedFinalWins: 8 },
-        lossesCompetition: { currentRank: 1, probabilityToWin: 0.125, probabilityTop3: 0.375, expectedFinalLosses: 8 },
-        magicNumbers: { winsToGuaranteeWinsTitle: 0, lossesToGuaranteeLossesTitle: 0 }
-      };
-    });
+  if (monteCarloResults) {
+    probabilities = monteCarloResults;
+  } else {
+    try {
+      probabilities = runMonteCarloSimulation(config, teams, currentWeek, 1000);
+    } catch (error) {
+      console.error('❌ Monte Carlo simulation failed:', error);
+      // Fallback to simple probabilities
+      probabilities = {};
+      Object.keys(config.players).forEach(playerId => {
+        probabilities[playerId] = {
+          player: config.players[playerId].name,
+          simulations: 0,
+          winsCompetition: { currentRank: 1, probabilityToWin: 0.125, probabilityTop3: 0.375, expectedFinalWins: 8 },
+          lossesCompetition: { currentRank: 1, probabilityToWin: 0.125, probabilityTop3: 0.375, expectedFinalLosses: 8 },
+          magicNumbers: { winsToGuaranteeWinsTitle: 0, lossesToGuaranteeLossesTitle: 0 }
+        };
+      });
+    }
   }
 
   const getTopProbabilities = () => {

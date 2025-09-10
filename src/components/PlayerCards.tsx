@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LeagueConfig, TeamRecord, PlayerStanding, AchievementsData } from '@/types';
 import { getTeamLogo } from '@/utils/nflApi';
+import { runMonteCarloSimulation } from '@/utils/calculations';
 import { Award, ChevronRight } from 'lucide-react';
 
 interface PlayerCardsProps {
@@ -8,6 +9,8 @@ interface PlayerCardsProps {
   teams: Record<string, TeamRecord>;
   standings: PlayerStanding[];
   achievements: AchievementsData | null;
+  currentWeek: number;
+  monteCarloResults?: Record<string, any> | null;
 }
 
 const PlayerCards: React.FC<PlayerCardsProps> = ({
@@ -15,9 +18,50 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
   teams,
   standings,
   achievements,
+  currentWeek,
+  monteCarloResults,
 }) => {
+  const [expandedPlayer, setExpandedPlayer] = useState<string | null>(null);
+  
+  // Use passed Monte Carlo results or calculate as fallback
+  let probabilities: Record<string, any> = {};
+  if (monteCarloResults) {
+    probabilities = monteCarloResults;
+  } else {
+    try {
+      probabilities = runMonteCarloSimulation(config, teams, currentWeek, 1000);
+    } catch (error) {
+      console.error('❌ Monte Carlo simulation failed in PlayerCards:', error);
+      // Fallback: equal probabilities if simulation fails
+      Object.keys(config.players).forEach(playerId => {
+        probabilities[playerId] = {
+          winsCompetition: { probabilityToWin: 0.125 },
+          lossesCompetition: { probabilityToWin: 0.125 }
+        };
+      });
+    }
+  }
+
   const getPlayerAchievements = (playerId: string) => {
     return achievements?.playerAchievements?.[playerId]?.earned || [];
+  };
+
+  const getHighestRarityAchievement = (playerId: string) => {
+    const playerAchievements = getPlayerAchievements(playerId);
+    if (playerAchievements.length === 0) return null;
+
+    // Sort by rarity priority: legendary > epic > rare > uncommon > common
+    const rarityOrder = { legendary: 0, epic: 1, rare: 2, uncommon: 3, common: 4 };
+    
+    const sorted = playerAchievements.sort((a, b) => {
+      const aData = achievements?.achievements?.[a.achievement];
+      const bData = achievements?.achievements?.[b.achievement];
+      const aRarity = aData?.rarity || 'common';
+      const bRarity = bData?.rarity || 'common';
+      return (rarityOrder[aRarity as keyof typeof rarityOrder] || 4) - (rarityOrder[bRarity as keyof typeof rarityOrder] || 4);
+    });
+
+    return achievements?.achievements?.[sorted[0].achievement];
   };
 
   const getTeamRecord = (teamAbbr: string) => {
@@ -33,15 +77,30 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
   };
 
   return (
-    <div className="container-constraint">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Player Rosters</h2>
-        <p className="text-secondary-text text-sm">Each player's 4 selected NFL teams and their current performance</p>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grid-constraint">
-        {Object.entries(config.players).map(([playerId, player]) => {
+    <>
+      <div className="container-constraint">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold mb-2">Player Rosters</h2>
+          <p className="text-secondary-text text-sm">Each player's 4 selected NFL teams and their current performance</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 grid-constraint">
+        {Object.entries(config.players)
+          .sort(([aId], [bId]) => {
+            // Get the BEST probability across both competitions (wins OR losses)
+            const aWinProb = probabilities[aId]?.winsCompetition?.probabilityToWin || 0;
+            const aLossProb = probabilities[aId]?.lossesCompetition?.probabilityToWin || 0;
+            const aBestProb = Math.max(aWinProb, aLossProb);
+            
+            const bWinProb = probabilities[bId]?.winsCompetition?.probabilityToWin || 0;
+            const bLossProb = probabilities[bId]?.lossesCompetition?.probabilityToWin || 0;
+            const bBestProb = Math.max(bWinProb, bLossProb);
+            
+            return bBestProb - aBestProb; // Descending order by best championship probability
+          })
+          .map(([playerId, player], index) => {
           const standing = standings.find(s => s.playerId === playerId);
+          const currentRank = index + 1; // Position in the sorted array
           const playerAchievements = getPlayerAchievements(playerId);
           
           return (
@@ -63,40 +122,89 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                 </div>
                 <div className="flex items-center gap-2">
                   {playerAchievements.length > 0 && (
-                    <div className="achievement-badge" title={`${playerAchievements.length} achievements earned`}>
-                      <Award className="w-3 h-3" />
-                      <span className="text-xs">
-                        {playerAchievements.length}
-                      </span>
-                    </div>
-                  )}
-                  {playerAchievements.slice(0, 3).map((achievement, idx) => {
-                    const achievementData = achievements?.achievements?.[achievement.achievement];
-                    if (!achievementData) return null;
-                    
-                    return (
-                      <div 
-                        key={achievement.achievement}
-                        className={`text-sm ${
-                          achievementData.rarity === 'legendary' ? 'text-neon-purple' :
-                          achievementData.rarity === 'epic' ? 'text-neon-blue' :
-                          achievementData.rarity === 'rare' ? 'text-neon-green' :
-                          'text-neon-yellow'
-                        }`}
-                        title={`${achievementData.name}: ${achievementData.description}`}
-                      >
-                        {achievementData.icon}
+                    <button
+                      onClick={() => {
+                        setExpandedPlayer(
+                          expandedPlayer === playerId ? null : playerId
+                        );
+                      }}
+                      className="achievement-badge cursor-pointer hover:scale-105 transition-transform bg-neon-green/20 border border-neon-green/50 px-2 py-1 rounded"
+                    >
+                      <div className="flex items-center gap-1">
+                        {(() => {
+                          const highestAchievement = getHighestRarityAchievement(playerId);
+                          return highestAchievement ? (
+                            <span className={`text-sm ${
+                              highestAchievement.rarity === 'legendary' ? 'text-neon-purple' :
+                              highestAchievement.rarity === 'epic' ? 'text-neon-blue' :
+                              highestAchievement.rarity === 'rare' ? 'text-neon-green' :
+                              'text-neon-yellow'
+                            }`}>
+                              {highestAchievement.icon}
+                            </span>
+                          ) : (
+                            <Award className="w-3 h-3" />
+                          );
+                        })()}
+                        <span className="text-xs">
+                          {playerAchievements.length}
+                        </span>
+                        <ChevronRight className={`w-3 h-3 transition-transform ${
+                          expandedPlayer === playerId ? 'rotate-90' : ''
+                        }`} />
                       </div>
-                    );
-                  })}
+                    </button>
+                  )}
                   <div className="text-right">
                     <div className="text-xs text-secondary-text">Current Rank</div>
                     <div className="font-display font-bold text-lg text-neon-green">
-                      #{standing?.currentRank || '-'}
+                      #{currentRank}
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* Achievements Dropdown */}
+              {expandedPlayer === playerId && playerAchievements.length > 0 && (
+                <div className="mb-4 p-4 bg-accent-bg/20 rounded-lg border border-accent-border/30">
+                  <h4 className="font-semibold text-sm mb-3">🏆 Achievements ({playerAchievements.length})</h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {playerAchievements.map((achievement) => {
+                      const achievementData = achievements?.achievements?.[achievement.achievement];
+                      if (!achievementData) return null;
+                      
+                      return (
+                        <div
+                          key={achievement.achievement}
+                          className={`flex items-center gap-3 p-2 rounded border-l-2 ${
+                            achievementData.rarity === 'legendary' ? 'border-neon-purple bg-neon-purple/5' :
+                            achievementData.rarity === 'epic' ? 'border-neon-blue bg-neon-blue/5' :
+                            achievementData.rarity === 'rare' ? 'border-neon-green bg-neon-green/5' :
+                            'border-neon-yellow bg-neon-yellow/5'
+                          }`}
+                        >
+                          <span className="text-lg">{achievementData.icon}</span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-sm">{achievementData.name}</span>
+                              <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                                achievementData.rarity === 'legendary' ? 'bg-neon-purple/20 text-neon-purple' :
+                                achievementData.rarity === 'epic' ? 'bg-neon-blue/20 text-neon-blue' :
+                                achievementData.rarity === 'rare' ? 'bg-neon-green/20 text-neon-green' :
+                                'bg-neon-yellow/20 text-neon-yellow'
+                              }`}>
+                                {achievementData.rarity}
+                              </span>
+                            </div>
+                            <p className="text-xs text-secondary-text mt-1">{achievementData.description}</p>
+                            <p className="text-xs text-muted-text">{new Date(achievement.earnedDate).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Team Grid */}
               <div className="grid grid-cols-2 gap-3 grid-constraint">
@@ -201,8 +309,9 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
             </div>
           );
         })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
