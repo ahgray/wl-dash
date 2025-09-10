@@ -201,13 +201,16 @@ export const TEAM_ID_MAP: Record<string, string> = {
   'LAC': '24', 'LAR': '14', 'LV': '13', 'MIA': '15',
   'MIN': '16', 'NE': '17', 'NO': '18', 'NYG': '19',
   'NYJ': '20', 'PHI': '21', 'PIT': '23', 'SEA': '26',
-  'SF': '25', 'TB': '27', 'TEN': '10', 'WAS': '28'
+  'SF': '25', 'TB': '27', 'TEN': '10', 'WSH': '28'
 };
 
 export function getTeamLogo(abbreviation: string): string {
   const teamId = TEAM_ID_MAP[abbreviation];
   if (!teamId) return '';
-  return `https://a.espncdn.com/i/teamlogos/nfl/500/${abbreviation.toLowerCase()}.png`;
+  
+  // Handle Washington's logo URL - ESPN uses 'was' in the URL regardless of abbreviation
+  const logoAbbr = abbreviation === 'WSH' ? 'was' : abbreviation.toLowerCase();
+  return `https://a.espncdn.com/i/teamlogos/nfl/500/${logoAbbr}.png`;
 }
 
 export async function fetchNFLData(): Promise<{

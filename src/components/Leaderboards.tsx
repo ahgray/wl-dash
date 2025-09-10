@@ -66,15 +66,26 @@ const Leaderboards: React.FC<LeaderboardsProps> = ({
               <div>
                 <p className="font-medium">{standing.playerName}</p>
                 <div className="flex gap-1 mt-1">
-                  {standing.teams.map((teamAbbr) => (
-                    <img
-                      key={teamAbbr}
-                      src={getTeamLogo(teamAbbr)}
-                      alt={teamAbbr}
-                      className="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity"
-                      title={teams[teamAbbr]?.name || teamAbbr}
-                    />
-                  ))}
+                  {standing.teams.map((teamAbbr) => {
+                    const logoUrl = getTeamLogo(teamAbbr); // Get team logo URL
+                    return logoUrl ? (
+                      <img
+                        key={teamAbbr}
+                        src={logoUrl}
+                        alt={teamAbbr}
+                        className="w-5 h-5 opacity-60 hover:opacity-100 transition-opacity"
+                        title={teams[teamAbbr]?.name || teamAbbr}
+                      />
+                    ) : (
+                      <div
+                        key={teamAbbr}
+                        className="w-5 h-5 bg-accent-bg rounded-sm flex items-center justify-center text-xs font-bold text-secondary-text opacity-60"
+                        title={teams[teamAbbr]?.name || teamAbbr}
+                      >
+                        {teamAbbr.slice(0, 2)}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

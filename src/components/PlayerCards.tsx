@@ -119,23 +119,41 @@ const PlayerCards: React.FC<PlayerCardsProps> = ({
                     >
                       <div className="flex items-center gap-2" style={{ maxWidth: '100%', overflow: 'hidden' }}>
                         <div className="relative">
-                          <img
-                            src={getTeamLogo(teamAbbr)}
-                            alt={teamAbbr}
-                            style={{ 
-                              width: '32px', 
-                              height: '32px', 
-                              maxWidth: '32px', 
-                              maxHeight: '32px',
-                              objectFit: 'contain',
-                              flexShrink: 0
-                            }}
-                            className="team-logo"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                            }}
-                          />
+                          {(() => {
+                            const logoUrl = getTeamLogo(teamAbbr);
+                            return logoUrl ? (
+                              <img
+                                src={logoUrl}
+                                alt={teamAbbr}
+                                style={{ 
+                                  width: '32px', 
+                                  height: '32px', 
+                                  maxWidth: '32px', 
+                                  maxHeight: '32px',
+                                  objectFit: 'contain',
+                                  flexShrink: 0
+                                }}
+                                className="team-logo"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <div
+                                style={{
+                                  width: '32px',
+                                  height: '32px',
+                                  maxWidth: '32px',
+                                  maxHeight: '32px',
+                                  flexShrink: 0
+                                }}
+                                className="bg-accent-bg rounded-sm flex items-center justify-center text-sm font-bold text-secondary-text"
+                              >
+                                {teamAbbr.slice(0, 2)}
+                              </div>
+                            );
+                          })()}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between">
