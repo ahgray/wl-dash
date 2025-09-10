@@ -121,7 +121,7 @@ export function runMonteCarloSimulation(
     };
   });
 
-  console.log(`🎲 Running ${simulations} Monte Carlo simulations for ${Object.keys(config.players).length} players...`);
+  console.log(`🎲 Running ${simulations} Monte Carlo simulations for ${Object.keys(config.players).length} players... (UPDATED VERSION)`);
   
   // Run all simulations comparing all players
   for (let sim = 0; sim < simulations; sim++) {
@@ -141,8 +141,25 @@ export function runMonteCarloSimulation(
 
           // Simulate remaining games
           for (let w = 0; w < remainingWeeks; w++) {
-            const winPct = team.winPct || 0.5; // Use actual win percentage or 50%
-            if (Math.random() < winPct) {
+            // Use a weighted average that regresses to mean (0.5) early in season
+            // This prevents extreme predictions based on small sample sizes
+            const gamesPlayed = team.wins + team.losses + team.ties;
+            const regressionWeight = Math.max(0, 10 - gamesPlayed); // Weight decreases as more games are played
+            
+            // Calculate base win probability with regression to mean
+            const baseWinPct = (team.winPct * gamesPlayed + 0.5 * regressionWeight) / (gamesPlayed + regressionWeight);
+            
+            // Add some variance based on ELO (if available) or random variance  
+            const eloFactor = team.elo ? (team.elo - 1500) / 1000 : 0; // Convert ELO to small adjustment
+            const randomVariance = (Math.random() - 0.5) * 0.1; // ±5% random variance per game
+            const adjustedWinPct = Math.max(0.1, Math.min(0.9, baseWinPct + eloFactor + randomVariance));
+            
+            // Debug log for first simulation and first team (to see if changes are applied)
+            if (sim === 0 && w === 0 && teamAbbr === Object.values(config.players)[0]?.teams[0]) {
+              console.log(`🎲 Simulation debug: ${teamAbbr} baseWinPct=${baseWinPct.toFixed(3)}, adjustedWinPct=${adjustedWinPct.toFixed(3)}`);
+            }
+            
+            if (Math.random() < adjustedWinPct) {
               simWins++;
             } else {
               simLosses++;
