@@ -1,21 +1,38 @@
 {
-  "name": "dashboard",
-  "version": "1.0.0",
-  "description": "",
+  "name": "football-winners-jets-dashboard",
+  "version": "2.0.0",
+  "description": "A real-time fantasy NFL dashboard where 8 players compete in wins and losses competitions with Monte Carlo predictions, achievements, and AI-generated narratives.",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ahgray/wl-dash.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nfl",
+    "fantasy-football",
+    "dashboard",
+    "monte-carlo",
+    "real-time",
+    "espn-api",
+    "next.js",
+    "typescript",
+    "tailwind",
+    "react",
+    "statistics",
+    "predictions",
+    "achievements"
+  ],
+  "author": "ahgray",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {

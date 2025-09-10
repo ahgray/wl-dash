@@ -1,5 +1,5 @@
 {
-  "lastCalculated": "2025-09-09T20:38:53.077Z",
+  "lastCalculated": "2025-09-10T02:58:45.342Z",
   "achievements": {
     "first_win": {
       "name": "First Victory",
@@ -123,7 +123,7 @@
       ]
     },
     "scallywagging": {
-      "total": 2,
+      "total": 3,
       "earned": [
         {
           "achievement": "perfect_week",
@@ -134,6 +134,11 @@
           "achievement": "first_win",
           "earnedDate": "2025-09-09",
           "context": "First win achieved with 4 total wins"
+        },
+        {
+          "achievement": "early_leader",
+          "earnedDate": "2025-09-09",
+          "context": "Leading wins competition after week 1"
         }
       ]
     },
